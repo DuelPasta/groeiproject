@@ -6,6 +6,8 @@ import javafx.scene.transform.Scale;
 import java.sql.Time;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.Comparator;
+import java.util.Objects;
 
 /**
  * BASISKLASSE
@@ -29,10 +31,10 @@ import java.time.LocalDateTime;
  * <p>
  * }
  */
-public class Gitaar {
+public class Gitaar implements Comparable<Gitaar> {
 
     private String brand;
-    private String batch;
+    private String type;
     private LocalDate releaseDate;
     private int numOfFrets;
     private double ScaleLength;
@@ -41,17 +43,18 @@ public class Gitaar {
 
     public Gitaar() {
         setBrand("Unknown");
-        setBatch("Unknown");
-        setReleaseDate(LocalDate.of(1988,05,30));
+        setType("Unknown");
+        setReleaseDate(LocalDate.of(1988, 05, 30));
         setNumOfFrets(54);
         setScaleLength(50);
         setWood(Wood.Mahogany.name());
         setEndorsed(true);
     }
+
     public Gitaar(String brand, String batch, LocalDate releaseDate, int numOfFrets, double scaleLength, String wood, boolean endorsed) {
 
         setBrand(brand);
-        setBatch(batch);
+        setType(batch);
         setReleaseDate(releaseDate);
         setNumOfFrets(numOfFrets);
         setScaleLength(scaleLength);
@@ -72,12 +75,12 @@ public class Gitaar {
     }
 
     public String getType() {
-        return batch;
+        return type;
     }
 
-    public void setBatch(String type) {
+    public void setType(String type) {
         if (type != null)
-            this.batch = type;
+            this.type = type;
         else {
             throw new IllegalArgumentException("Can't set batch. Value must be a string and cannot be empty!");
         }
@@ -146,5 +149,42 @@ public class Gitaar {
             throw new IllegalArgumentException("Can't set endorsed boolean.Value must be a boolean");
         }
 
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Gitaar gitaar = (Gitaar) o;
+        return Objects.equals(getBrand(), gitaar.getBrand()) &&
+                Objects.equals(getType(), gitaar.getType()) &&
+                Objects.equals(getReleaseDate(), gitaar.getReleaseDate());
+    }
+
+    @Override
+    public int hashCode() {
+
+        return Objects.hash(getBrand(), getType(), getReleaseDate());
+    }
+
+
+    @Override
+    public int compareTo(Gitaar o) {
+        return Comparator.comparing(Gitaar::getBrand)
+                .thenComparing(Gitaar::getType)
+                .thenComparing(Gitaar::getReleaseDate)
+                .compare(this, o);
+    }
+
+    @Override
+    public String toString() {
+
+        return String.format("%s \t\t %s \t\t %s \t\t  Frets: %d \t\t Scale Length: %5.2f \t\t\t Released: %tY"
+                , brand
+                , type
+                , wood
+                , numOfFrets
+                , ScaleLength
+                , releaseDate);
     }
 }

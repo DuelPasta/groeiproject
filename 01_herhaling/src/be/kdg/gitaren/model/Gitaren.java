@@ -1,5 +1,8 @@
 package be.kdg.gitaren.model;
 
+import java.time.LocalDate;
+import java.util.TreeSet;
+
 /**
  * MULTIKLASSE
  * STUDENT: Jasper Lambrechts
@@ -25,4 +28,13 @@ package be.kdg.gitaren.model;
  */
 public class Gitaren {
 
+    TreeSet<Gitaar> gitaar = new TreeSet<>();
+
+    public boolean voegToe(Gitaar gitaar) {
+        return this.gitaar.add(gitaar);
+    }
+
+    public boolean verwijder(String brand, String type, LocalDate released) {
+        gitaar.eq
+    }
 }
